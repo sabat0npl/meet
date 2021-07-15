@@ -1,6 +1,4 @@
-// src/mock-data.js
-
-let mockData = [
+const mockData = [
   {
     kind: "calendar#event",
     etag: '"3181161784712000"',
@@ -84,7 +82,5 @@ let mockData = [
     eventType: "default",
   },
 ];
-
-mockData = JSON.parse(JSON.stringify(mockData));
 
 export { mockData };

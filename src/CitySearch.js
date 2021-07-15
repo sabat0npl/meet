@@ -1,7 +1,5 @@
-// src/CitySearch.js
-
 import React, { Component } from "react";
-
+import "./style.css";
 class CitySearch extends Component {
   state = {
     query: "",
