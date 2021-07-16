@@ -8,6 +8,7 @@ import NumberOfEvents from "./NumberOfEvents";
 import { getEvents, extractLocations } from "./api";
 import "./style.css";
 import "./nprogress.css";
+import { WarningAlert } from "./Alert";
 
 class App extends Component {
   state = {
@@ -66,6 +67,7 @@ class App extends Component {
         <NumberOfEvents
           updateNumberOfEvents={(e) => this.updateNumberOfEvents(e)}
         />
+        <WarningAlert text={this.state.infoText} className="InfoAlert" />
         <EventList events={this.state.events} />
       </div>
     );
