@@ -5,7 +5,7 @@ import App from "../App";
 import { mockData } from "../mock-data";
 import NumberOfEvents from "../NumberOfEvents";
 
-const feature = loadFeature("./src/features/SpecifyNumberOfEvents.feature");
+const feature = loadFeature("./src/features/specifyNumberOfEvents.feature");
 let AppWrapper;
 defineFeature(feature, (test) => {
   test("when user has not specified a number of thirty two  is the default number", ({
