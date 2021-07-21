@@ -48,6 +48,16 @@ class App extends Component {
         this.setState({ events, locations: extractLocations(events) });
       }
     });
+    if (!navigator.onLine) {
+      this.setState({
+        infoText:
+          "Internet connection not detected, previously loaded events are displayed",
+      });
+    } else {
+      this.setState({
+        infoText: "",
+      });
+    }
   }
 
   componentWillUnmount() {

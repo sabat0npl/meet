@@ -31,9 +31,9 @@ export const getAccessToken = async () => {
 };
 
 export const checkToken = async (accessToken) => {
-  // if (window.location.href.startsWith("http://localhost")) {
-  //   return {};
-  // }
+  if (window.location.href.startsWith("http://localhost")) {
+    return {};
+  }
 
   const result = await fetch(
     `https://www.googleapis.com/oauth2/v1/tokeninfo?access_token=${accessToken}`
@@ -52,20 +52,20 @@ export const getEvents = async () => {
     return mockData;
   }
 
-  // if (!navigator.onLine) {
-  //   const lastEvents = localStorage.getItem("lastEvents");
-  //   NProgress.done();
-  //   console.log(lastEvents);
+  if (!navigator.onLine) {
+    const lastEvents = localStorage.getItem("lastEvents");
+    NProgress.done();
 
-  //   return lastEvents ? JSON.parse(lastEvents).events : [];
-  // }
+    return lastEvents ? JSON.parse(lastEvents).events : [];
+  }
 
   const token = await getAccessToken();
 
   if (token) {
     removeQuery();
     const url =
-      "https://cwhyfdt4z8.execute-api.eu-central-1.amazonaws.com/dev/api/get-events/" + token;
+      "https://cwhyfdt4z8.execute-api.eu-central-1.amazonaws.com/dev/api/get-events/" +
+      token;
     const result = await axios.get(url);
     if (result.data) {
       var locations = extractLocations(result.data.events);
