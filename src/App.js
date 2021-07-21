@@ -3,12 +3,10 @@ import "./App.css";
 import EventList from "./EventList";
 import CitySearch from "./CitySearch";
 import NumberOfEvents from "./NumberOfEvents";
-import { getEvents, extractLocations } from "./api";
-import "./style.css";
+import { getEvents, extractLocations, checkToken, getAccessToken } from "./api";
 import "./nprogress.css";
 import { WarningAlert } from "./Alert";
 import WelcomeScreen from "./WelcomeScreen";
-import EventGenre from "./EventGenre";
 
 class App extends Component {
   state = {
