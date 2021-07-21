@@ -1,5 +1,3 @@
-// src/App.js
-
 import React, { Component } from "react";
 import "./App.css";
 import EventList from "./EventList";
@@ -9,6 +7,8 @@ import { getEvents, extractLocations } from "./api";
 import "./style.css";
 import "./nprogress.css";
 import { WarningAlert } from "./Alert";
+import WelcomeScreen from "./WelcomeScreen";
+import EventGenre from "./EventGenre";
 
 class App extends Component {
   state = {
@@ -17,6 +17,7 @@ class App extends Component {
     numberOfEvents: 32,
     currentCity: "all",
     infoText: "",
+    showWelcomeScreen: undefined,
   };
 
   updateEvents = (location, numberOfEvents) => {
@@ -41,22 +42,34 @@ class App extends Component {
     this.updateEvents(currentCity, eventNumber);
   }
 
-  componentDidMount() {
+  async componentDidMount() {
+    const { numberOfEvents } = this.state;
     this.mounted = true;
-    getEvents().then((events) => {
-      if (this.mounted) {
-        this.setState({ events, locations: extractLocations(events) });
+    const accessToken = localStorage.getItem("access_token");
+
+    const isTokenValid = (await checkToken(accessToken)).error ? false : true;
+    const searchParams = new URLSearchParams(window.location.search);
+    const code = searchParams.get("code");
+    this.setState({ showWelcomeScreen: !(code || isTokenValid) });
+    if ((code || isTokenValid) && this.mounted) {
+      getEvents().then((events) => {
+        if (this.mounted) {
+          this.setState({
+            events: events.slice(0, numberOfEvents),
+            locations: extractLocations(events),
+          });
+        }
+      });
+      if (!navigator.onLine) {
+        this.setState({
+          infoText:
+            "Internet connection not detected, previously loaded events are displayed",
+        });
+      } else {
+        this.setState({
+          infoText: "",
+        });
       }
-    });
-    if (!navigator.onLine) {
-      this.setState({
-        infoText:
-          "Internet connection not detected, previously loaded events are displayed",
-      });
-    } else {
-      this.setState({
-        infoText: "",
-      });
     }
   }
 
@@ -65,6 +78,16 @@ class App extends Component {
   }
 
   render() {
+    if (this.state.showWelcomeScreen)
+      return (
+        <WelcomeScreen
+          showWelcomeScreen={this.state.showWelcomeScreen}
+          getAccessToken={() => {
+            getAccessToken();
+          }}
+        />
+      );
+
     return (
       <div className="App">
         <h1>Meet App</h1>
